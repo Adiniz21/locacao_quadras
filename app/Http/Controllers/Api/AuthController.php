@@ -30,4 +30,8 @@ class AuthController extends Controller
             'token' => $token->plainTextToken,
         ]);
     }
+    protected function authenticated(Request $request, $user)
+    {
+        return redirect('/dashboard');
+    }
 }

@@ -37,4 +37,19 @@ return [
             'password' => 'Password',
         ],
     ],
+
+    'all_employees' => [
+        'name' => 'All Employees',
+        'index_title' => 'AllEmployees List',
+        'new_title' => 'New Employees',
+        'create_title' => 'Create Employees',
+        'edit_title' => 'Edit Employees',
+        'show_title' => 'Show Employees',
+        'inputs' => [
+            'user_id' => 'User',
+            'position' => 'Position',
+            'salary' => 'Salary',
+            'hired_date' => 'Hired Date',
+        ],
+    ],
 ];

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\EmployeesController;
 use App\Http\Controllers\Api\UserReservationsController;
 
 /*
@@ -39,4 +40,6 @@ Route::name('api.')
             UserReservationsController::class,
             'store',
         ])->name('users.reservations.store');
+
+        Route::apiResource('all-employees', EmployeesController::class);
     });

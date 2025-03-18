@@ -23,6 +23,11 @@
                         Users
                         </x-dropdown-link>
                         @endcan
+                        @can('view-any', App\Models\Employees::class)
+                        <x-dropdown-link href="{{ route('all-employees.index') }}">
+                        All Employees
+                        </x-dropdown-link>
+                        @endcan
                 </x-nav-dropdown>
 
             </div>
@@ -154,6 +159,11 @@
                 @can('view-any', App\Models\User::class)
                 <x-responsive-nav-link href="{{ route('users.index') }}">
                 Users
+                </x-responsive-nav-link>
+                @endcan
+                @can('view-any', App\Models\Employees::class)
+                <x-responsive-nav-link href="{{ route('all-employees.index') }}">
+                All Employees
                 </x-responsive-nav-link>
                 @endcan
 

@@ -13,11 +13,28 @@ export default {
 
     theme: {
         extend: {
+
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
-        },
-    },
+            colors: {
 
-    plugins: [forms, typography],
+                // Se você quiser "substituir" o indigo padrão por outro tom, pode fazer assim:
+                indigo: {
+                    50:  '#fffbf7',
+                    100: '#fef3e7',
+                    200: '#fce0c3',
+                    300: '#facd9f',
+                    400: '#f8a653',
+                    500: '#f47a06', // <-- cor principal
+                    600: '#dd6e05',
+                    700: '#9a4c03',
+                    800: '#763902',
+                    900: '#522601',
+                },
+            },
+        },
+
+        plugins: [forms, typography],
+    }
 };

@@ -26,6 +26,12 @@ Route::middleware(['auth:sanctum', 'verified'])
     })
     ->name('dashboard');
 
+    Route::middleware(['auth:sanctum', 'verified'])
+    ->get('/home', function () {
+        return view('home');
+    })
+    ->name('home');
+
 Route::prefix('/')
     ->middleware(['auth:sanctum', 'verified'])
     ->group(function () {

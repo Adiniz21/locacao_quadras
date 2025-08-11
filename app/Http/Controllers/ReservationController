@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\{Reservation, SportsFacility};
+use Illuminate\Support\Carbon;
+
+class ReservationController extends Controller
+{
+    public function index()
+    {
+        $reservations = auth()->user()->hasMany(Reservation::class,'user_id')
+            ->with('facility.venue')
+            ->orderByDesc('reservation_date')
+            ->orderByDesc('start_time')
+            ->get();
+
+        return view('reservations.index', compact('reservations'));
+    }
+
+    public function show(Reservation $reservation)
+    {
+        $reservation->load('facility.venue');
+        return view('reservations.show', compact('reservation'));
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'sports_facilities_id' => ['required','exists:sports_facilities,id'],
+            'start_at' => ['required','date'],
+            'end_at'   => ['required','date','after:start_at'],
+        ]);
+
+        $start = Carbon::parse($data['start_at']);
+        $end   = Carbon::parse($data['end_at']);
+
+        $date  = $start->toDateString();
+        $st    = $start->format('H:i');
+        $et    = $end->format('H:i');
+
+        if (Reservation::overlaps($data['sports_facilities_id'], $date, $st, $et)) {
+            return back()->with('success', 'Esse horário acabou de ser reservado. Tente outro.');
+        }
+
+        $facility = SportsFacility::findOrFail($data['sports_facilities_id']);
+        $hours    = max(1, $start->diffInMinutes($end) / 60);
+        $price    = (float)($facility->hourly_price ?? 0) * $hours;
+
+        $reservation = Reservation::create([
+            'sports_facilities_id' => $facility->id,
+            'user_id'              => auth()->id(),
+            'reservation_date'     => $date,
+            'start_time'           => $st,
+            'end_time'             => $et,
+            'total_price'          => $price,
+            'payment_status'       => 'confirmed', // ou 'paid'
+            'recurrence'           => 'none',
+            'notification_sent'    => false,
+        ]);
+
+        return redirect()->route('reservations.show', $reservation)
+            ->with('success', 'Reserva confirmada!');
+    }
+}

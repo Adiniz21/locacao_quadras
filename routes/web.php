@@ -1,74 +1,57 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
+| Rotas públicas (sem login) e rotas autenticadas (com login).
+| Mantemos nomes de rotas estáveis para usar nos blades.
 */
 
+/* ==========================  PÚBLICAS  ========================== */
 
-Route::middleware(['auth:sanctum', 'verified'])
-    ->get('/dashboard', function () {
-        return view('dashboard');
-    })
-    ->name('dashboard');
+// Landing/Home (página inicial do site)
+Route::view('/', 'welcome')->name('home');
+   // se preferir "welcome", troque o nome da view
 
-    Route::middleware(['auth:sanctum', 'verified'])
-    ->get('/home', function () {
-        return view('home');
-    })
-    ->name('home');
-
-Route::prefix('/')
-    ->middleware(['auth:sanctum', 'verified'])
-    ->group(function () {
-        Route::resource('users', UserController::class);
-        Route::get('all-employees', [
-            EmployeesController::class,
-            'index',
-        ])->name('all-employees.index');
-        Route::post('all-employees', [
-            EmployeesController::class,
-            'store',
-        ])->name('all-employees.store');
-        Route::get('all-employees/create', [
-            EmployeesController::class,
-            'create',
-        ])->name('all-employees.create');
-        Route::get('all-employees/{employees}', [
-            EmployeesController::class,
-            'show',
-        ])->name('all-employees.show');
-        Route::get('all-employees/{employees}/edit', [
-            EmployeesController::class,
-            'edit',
-        ])->name('all-employees.edit');
-        Route::put('all-employees/{employees}', [
-            EmployeesController::class,
-            'update',
-        ])->name('all-employees.update');
-        Route::delete('all-employees/{employees}', [
-            EmployeesController::class,
-            'destroy',
-        ])->name('all-employees.destroy');
-    });
-
-
-    // routes/web.php
-Route::get('/', fn () => view('welcome'))->name('home');
-
-
-
-// opcional: páginas institucionais
+// Páginas institucionais
 Route::view('/sobre', 'about')->name('about');
 Route::view('/contato', 'contact')->name('contact');
+
+// Disponibilidade (busca) – pública por enquanto
+Route::get('/disponibilidade', [AvailabilityController::class, 'index'])
+    ->name('availability.index');
+
+
+/* ========================  AUTENTICADAS  ======================== */
+
+Route::middleware(['auth:sanctum', 'verified'])
+->get('/home', function () {
+    return view('home');
+})
+->name('home');
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+
+    // Dashboard
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+
+    // Usuários (CRUD)
+    Route::resource('users', UserController::class);
+
+    // Funcionários (CRUD) – usa nomes padrão: all-employees.index|create|store|show|edit|update|destroy
+    Route::resource('all-employees', EmployeesController::class);
+
+    // Placeholders para links do dashboard (remova quando implementar de verdade)
+    Route::get('/reservas', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::get('/reservas/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
+    Route::post('/reservar', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::view('/favoritos', 'favorites.index')->name('favorites.index');
+    Route::view('/minhas-quadras', 'venues.index')->name('venues.index');
+});

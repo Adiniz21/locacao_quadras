@@ -16,9 +16,6 @@ use App\Http\Controllers\EmployeesController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::middleware(['auth:sanctum', 'verified'])
     ->get('/dashboard', function () {
@@ -65,3 +62,13 @@ Route::prefix('/')
             'destroy',
         ])->name('all-employees.destroy');
     });
+
+
+    // routes/web.php
+Route::get('/', fn () => view('welcome'))->name('home');
+
+
+
+// opcional: páginas institucionais
+Route::view('/sobre', 'about')->name('about');
+Route::view('/contato', 'contact')->name('contact');

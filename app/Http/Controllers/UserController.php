@@ -115,3 +115,4 @@ class UserController extends Controller
             ->withSuccess(__('crud.common.removed'));
     }
 }
+

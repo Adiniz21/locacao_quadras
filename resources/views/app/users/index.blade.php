@@ -53,13 +53,7 @@
                                     @lang('crud.users.inputs.name')
                                 </th>
                                 <th class="px-4 py-3 text-left">
-                                    @lang('crud.users.inputs.cpf')
-                                </th>
-                                <th class="px-4 py-3 text-left">
                                     @lang('crud.users.inputs.email')
-                                </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.users.inputs.phone')
                                 </th>
                                 <th></th>
                             </tr>
@@ -71,13 +65,7 @@
                                     {{ $user->name ?? '-' }}
                                 </td>
                                 <td class="px-4 py-3 text-left">
-                                    {{ $user->cpf ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
                                     {{ $user->email ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ $user->phone ?? '-' }}
                                 </td>
                                 <td
                                     class="px-4 py-3 text-center"

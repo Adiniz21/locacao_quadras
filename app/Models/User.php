@@ -41,6 +41,10 @@ class User extends Authenticatable
         return $this->hasOne(Employees::class);
     }
 
+    public function employee()
+    {
+        return $this->hasOne(Employees::class, 'user_id');
+    }
     public function isSuperAdmin(): bool
     {
         return in_array($this->email, config('auth.super_admins'));
@@ -50,7 +54,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Reservation::class);
     }
-    
+
     public function venues()
     {
         return $this->hasMany(\App\Models\Venue::class, 'owner_id');

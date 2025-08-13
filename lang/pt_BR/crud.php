@@ -20,6 +20,7 @@ return [
         'created' => 'Criado com sucesso',
         'saved' => 'Salvo com sucesso',
         'removed' => 'Removido com sucesso',
+        'please_select' => 'Por favor selecione',
     ],
 
     'auth' => [
@@ -49,7 +50,7 @@ return [
         ],
     ],
 
-    'employees' => [
+    'all_employees' => [
         'name' => 'Funcionários',
         'index_title' => 'Lista de Funcionários',
         'new_title' => 'Novo Funcionário',
@@ -61,6 +62,15 @@ return [
             'position' => 'Cargo',
             'salary' => 'Salário',
             'hired_date' => 'Data de Contratação',
+        ],
+        'placeholders' => [
+            'salary' => 'Por favor, informe o salário',
+        ],
+        'validation' => [
+            'salary_gt' => 'O salário deve ser maior que zero.',
+            'salary_numeric' => 'Informe um valor numérico válido para o salário.',
+            'hired_date_format' => 'A data de contratação deve estar no formato dd/mm/aaaa.',
+            'hired_date_not_future' => 'A data de contratação não pode ser no futuro.'
         ],
     ],
 

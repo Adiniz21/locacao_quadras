@@ -46,7 +46,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('users', UserController::class);
 
     // Funcionários (CRUD) – usa nomes padrão: all-employees.index|create|store|show|edit|update|destroy
-    Route::resource('all-employees', EmployeesController::class);
+    Route::resource('all-employees', EmployeesController::class)
+    ->parameters(['all-employees' => 'employees']);
+
 
     // Placeholders para links do dashboard (remova quando implementar de verdade)
     Route::get('/reservas', [ReservationController::class, 'index'])->name('reservations.index');

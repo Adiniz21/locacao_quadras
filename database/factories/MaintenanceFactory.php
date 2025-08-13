@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Maintenance;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\SportsFacility;
 
 class MaintenanceFactory extends Factory
 {
@@ -23,10 +24,10 @@ class MaintenanceFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => $this->faker->sentence(15),
-            ' scheduled_date' => $this->faker->date(),
-            'status' => $this->faker->randomElement(['active', 'on_leave', 'terminated', 'retired']),
-            'sports_facilities_id' => \App\Models\SportsFacilities::factory(),
+            'description' => $this->faker->sentence(12),
+            'scheduled_date' => $this->faker->date(),
+            'status' => $this->faker->randomElement(['scheduled', 'in_progress', 'completed', 'cancelled']),
+            'sports_facilities_id' => SportsFacility::factory(),
         ];
     }
 }

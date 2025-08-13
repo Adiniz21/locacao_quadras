@@ -36,11 +36,6 @@ class User extends Authenticatable
         'two_factor_confirmed_at' => 'datetime',
     ];
 
-    public function reservations()
-    {
-        return $this->hasMany(Reservation::class);
-    }
-
     public function employees()
     {
         return $this->hasOne(Employees::class);
@@ -51,10 +46,11 @@ class User extends Authenticatable
         return in_array($this->email, config('auth.super_admins'));
     }
 
-    public function bookings()
+    public function reservations()
     {
-        return $this->hasMany(\App\Models\Booking::class);
+        return $this->hasMany(\App\Models\Reservation::class);
     }
+    
     public function venues()
     {
         return $this->hasMany(\App\Models\Venue::class, 'owner_id');

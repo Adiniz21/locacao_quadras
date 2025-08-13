@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Reservation extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'sports_facilities_id','user_id',
         'reservation_date','start_time','end_time',

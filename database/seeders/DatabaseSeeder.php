@@ -19,12 +19,17 @@ class DatabaseSeeder extends Seeder
                 'password' => \Hash::make('admin'),
             ]);
 
-        $this->call(EmployeesSeeder::class);
-        $this->call(MaintenanceSeeder::class);
-        $this->call(PaymentSeeder::class);
-        $this->call(ReservationSeeder::class);
-        $this->call(SportsFacilitiesSeeder::class);
-        $this->call(UserSeeder::class);
-        $this->call(\Database\Seeders\SampleDataSeeder::class);
+            $this->call(EmployeesSeeder::class);
+            $this->call(MaintenanceSeeder::class);
+        
+            // crie facilities/venues e reservations ANTES
+            $this->call(SportsFacilitiesSeeder::class);
+            $this->call(ReservationSeeder::class);
+        
+            // depois os pagamentos
+            $this->call(PaymentSeeder::class);
+        
+            $this->call(UserSeeder::class);
+        
     }
 }

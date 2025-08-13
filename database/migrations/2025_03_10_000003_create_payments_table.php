@@ -11,15 +11,15 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('reservation_id');
-            $table->decimal('amount');
-            $table->enum('payment_method',  ['cash', 'credit_card', 'debit_card', 'pix', 'bank_transfer', 'boleto']);
-            $table->enum('status', ['pending', 'paid', 'failed', 'refunded']);
-            $table->timestamp('transaction_date');
-
+            $table->id();
+            $table->unsignedBigInteger('reservation_id'); // FK adicionada depois na add_foreigns_...
+            $table->decimal('amount', 10, 2)->default(0);
+            $table->enum('status', ['pending','paid','failed','refunded'])->default('pending');
+            $table->string('method', 20)->nullable();  // <- AQUI
+            $table->dateTime('paid_at')->nullable();   // <- E AQUI
             $table->timestamps();
         });
+        
     }
 
     /**

@@ -3,8 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\SportsFacilities;
-
+use App\Models\SportsFacility;
 class SportsFacilitiesSeeder extends Seeder
 {
     /**
@@ -12,8 +11,8 @@ class SportsFacilitiesSeeder extends Seeder
      */
     public function run(): void
     {
-        SportsFacilities::factory()
-            ->count(5)
-            ->create();
+        SportsFacility::factory()
+        ->count(5)
+        ->create();
     }
 }

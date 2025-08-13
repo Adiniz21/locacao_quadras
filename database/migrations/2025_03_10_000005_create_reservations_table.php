@@ -18,7 +18,8 @@ return new class extends Migration {
             $table->time('start_time');
             $table->time('end_time');
             $table->decimal('total_price');
-            $table->enum('payment_status', ['pending', 'paid', 'failed', 'refunded', 'cancelled']);
+            $table->enum('payment_status', ['pending', 'confirmed', 'paid', 'cancelled'])
+                ->default('confirmed');
             $table->enum('recurrence', ['none', 'daily', 'weekly', 'biweekly', 'monthly']);
             $table->boolean('notification_sent');
 

@@ -2,36 +2,31 @@
 
 namespace Database\Factories;
 
-use App\Models\Reservation;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\{Reservation, SportsFacility, User};
+use Illuminate\Support\Carbon;
 
 class ReservationFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = Reservation::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
+        // data e hora coerentes
+        $date  = Carbon::parse($this->faker->dateTimeBetween('+1 day', '+1 month'))->toDateString();
+        $start = Carbon::createFromTime($this->faker->numberBetween(8, 21), [0,30][rand(0,1)]);
+        $end   = (clone $start)->addMinutes([60,90,120][rand(0,2)]);
+
         return [
-            'reservation_date' => $this->faker->date(),
-            'start_time' => $this->faker->time(),
-            'end_time' => $this->faker->time(),
-            'total_price' => $this->faker->randomNumber(1),
-            'payment_status' => $this->faker->randomElement(['pending', 'paid', 'failed', 'refunded', 'cancelled']),
-            'recurrence' => $this->faker->randomElement(['none', 'daily', 'weekly', 'biweekly', 'monthly']),
-            'notification_sent' => $this->faker->boolean(),
-            'sports_facilities_id' => \App\Models\SportsFacilities::factory(),
-            'user_id' => \App\Models\User::factory(),
+            'sports_facilities_id' => SportsFacility::factory(),
+            'user_id'              => User::factory(),
+            'reservation_date'     => $date,
+            'start_time'           => $start->format('H:i:s'),
+            'end_time'             => $end->format('H:i:s'),
+            'total_price'          => $this->faker->randomFloat(2, 50, 300),
+            'payment_status'       => $this->faker->randomElement(['confirmed','paid','pending']),
+            'recurrence'           => 'none',
+            'notification_sent'    => false,
         ];
     }
 }

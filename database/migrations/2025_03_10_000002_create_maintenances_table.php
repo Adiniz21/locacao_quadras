@@ -11,14 +11,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('maintenances', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('sports_facilities_id');
-            $table->text('description');
-            $table->date(' scheduled_date');
-            $table->enum('status', ['active', 'on_leave', 'terminated', 'retired']);
-
+            $table->id();
+            // se você adiciona a FK depois, deixe só o unsignedBigInteger aqui:
+            $table->unsignedBigInteger('sports_facilities_id'); // FK virá na add_foreigns_...
+            $table->string('description');
+            $table->date('scheduled_date')->nullable();   // <--- ESTA É A COLUNA QUE FALTA
+            $table->enum('status', ['scheduled', 'in_progress', 'completed', 'cancelled'])
+                ->default('scheduled');
             $table->timestamps();
         });
+
     }
 
     /**

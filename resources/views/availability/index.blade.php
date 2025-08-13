@@ -7,12 +7,8 @@
   <form action="{{ route('availability.index') }}" method="GET"
         class="grid grid-cols-1 md:grid-cols-6 gap-3 bg-white rounded-2xl p-4 shadow-sm">
     <div class="md:col-span-2">
-      <label class="text-xs text-gray-600">Cidade / Bairro / Quadra</label>
-      <input name="q" value="{{ request('q') }}" class="mt-1 w-full rounded-xl border-gray-300" placeholder="Ex.: Vila Mariana">
-    </div>
-    <div>
-      <label class="text-xs text-gray-600">Modalidade</label>
-      <input name="sport" value="{{ request('sport') }}" class="mt-1 w-full rounded-xl border-gray-300" placeholder="Futebol 7">
+      <label class="text-xs text-gray-600">Cidade / Nome</label>
+      <input name="q" value="{{ request('q') }}" class="mt-1 w-full rounded-xl border-gray-300" placeholder="Ex.: Centro">
     </div>
     <div>
       <label class="text-xs text-gray-600">Data</label>
@@ -33,21 +29,23 @@
 
   <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
     @forelse($results ?? [] as $row)
-      @php($court = $row['court'])
+      @php($f = $row['facility'])
       <div class="bg-white rounded-xl shadow p-4 flex items-center justify-between">
         <div>
-          <div class="font-semibold">{{ $court->name }} — {{ $court->venue->name }}</div>
-          <div class="text-sm text-gray-500">{{ $court->sport }} • {{ $court->venue->city }}</div>
-          <div class="text-sm text-gray-500">R$ {{ number_format($court->hourly_price,2,',','.') }}/h</div>
+          <div class="font-semibold">{{ $f->name }} — {{ $f->venue->name ?? '' }}</div>
+          <div class="text-sm text-gray-500">{{ $f->venue->city ?? '' }}</div>
+          @if(!is_null($f->hourly_price))
+            <div class="text-sm text-gray-500">R$ {{ number_format($f->hourly_price,2,',','.') }}/h</div>
+          @endif
         </div>
 
         @auth
           @if($row['available'])
-            <form action="{{ route('bookings.store') }}" method="POST" class="flex items-center gap-2">
+            <form action="{{ route('reservations.store') }}" method="POST" class="flex items-center gap-2">
               @csrf
-              <input type="hidden" name="court_id" value="{{ $court->id }}">
+              <input type="hidden" name="sports_facilities_id" value="{{ $f->id }}">
               <input type="hidden" name="start_at" value="{{ $start->toIso8601String() }}">
-              <input type="hidden" name="end_at" value="{{ $end->toIso8601String() }}">
+              <input type="hidden" name="end_at"   value="{{ $end->toIso8601String() }}">
               <button class="px-4 py-2 rounded-lg bg-gray-900 text-white hover:bg-black text-sm">Reservar</button>
             </form>
           @else
@@ -58,7 +56,7 @@
         @endauth
       </div>
     @empty
-      <div class="text-gray-500">Nenhuma quadra encontrada para os filtros.</div>
+      <div class="text-gray-500">Nenhum local encontrado nos filtros.</div>
     @endforelse
   </div>
 </div>

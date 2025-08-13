@@ -4,7 +4,7 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div class="bg-white rounded-xl shadow p-4">
           <div class="text-sm text-gray-500">Reservas hoje</div>
-          <div class="text-2xl font-semibold">{{ $ownerStats['today_bookings'] }}</div>
+          <div class="text-2xl font-semibold">{{ $ownerStats['today_reservations'] }}</div>
         </div>
         <div class="bg-white rounded-xl shadow p-4">
           <div class="text-sm text-gray-500">Ocupação (mês)</div>
@@ -55,7 +55,7 @@
           <div class="text-xl font-semibold">Buscar quadras</div>
           <p class="text-sm text-gray-500 mt-1">Encontre quadras livres por perto</p>
         </a>
-        <a href="{{ route('bookings.index') }}" class="bg-white rounded-xl shadow p-4 hover:shadow-md transition">
+        <a href="{{ route('reservations.index') }}" class="bg-white rounded-xl shadow p-4 hover:shadow-md transition">
           <div class="text-sm text-gray-500">Atalhos</div>
           <div class="text-xl font-semibold">Minhas reservas</div>
           <p class="text-sm text-gray-500 mt-1">Gerencie e cancele quando possível</p>
@@ -70,7 +70,7 @@
       <div class="bg-white rounded-xl shadow p-4">
         <div class="flex items-center justify-between mb-3">
           <h3 class="font-semibold">Próximas reservas</h3>
-          <a href="{{ route('bookings.index') }}" class="text-sm text-orange-600 hover:underline">ver todas</a>
+          <a href="{{ route('reservations.index') }}" class="text-sm text-orange-600 hover:underline">ver todas</a>
         </div>
   
         <ul class="divide-y">
@@ -78,18 +78,18 @@
             <li class="py-3 flex items-center justify-between text-sm">
               <div>
                 <div class="font-medium">
-                  {{ $b->court?->name }} — {{ $b->court?->venue?->name }}
+                  {{ $b->facility?->name }} — {{ $b->facility?->venue?->name }}
                 </div>
                 <div class="text-gray-500">
                   {{-- sport é COLUNA; se um dia virar relação, esse fallback cobre os dois casos --}}
-                  {{ $b->court?->sport?->name ?? $b->court?->sport }}
+                  {{ $b->facility?->sport?->name ?? $b->facility?->sport }}
                   • {{ optional($b->start_at)->format('d/m H:i') }}–{{ optional($b->end_at)->format('H:i') }}
                 </div>
               </div>
               <div class="flex gap-2">
-                <a href="{{ route('bookings.show', $b) }}" class="px-3 py-2 rounded-lg border text-gray-700">Detalhes</a>
+                <a href="{{ route('reservations.show', $b) }}" class="px-3 py-2 rounded-lg border text-gray-700">Detalhes</a>
                 <a href="{{ route('availability.index', [
-                        'court' => $b->court_id,
+                        'facility' => $b->facility_id,
                         'date'  => optional($b->start_at)->toDateString(),
                         'time'  => optional($b->start_at)->format('H:i')
                       ]) }}"
